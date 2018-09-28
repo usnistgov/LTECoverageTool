@@ -1,0 +1,2 @@
+# LTECoverageTool
+This experimental application was developed by the National Institute of Standards and Technology (NIST) Public Safety Communications Research Division (PSCR), with funding from the Department of Homeland Security Science &amp; Technology Directorate (DHS S&amp;T). Its purpose is to enable public safety personnel to measure general LTE coverage quality using a standard smartphone. Source code is published as a software development kit (SDK) to allow developers to enhance the application or use it in other applications.
