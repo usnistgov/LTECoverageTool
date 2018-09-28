@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="gov.nist.oism.asd.ltecoveragetool"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher_indoor_lte"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".DisclaimerActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ProhibitionNoticeActivity"
+            android:parentActivityName=".DisclaimerActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DisclaimerActivity"/>
+        </activity>
+        <activity
+            android:name=".AcknowledgementNoticeActivity"
+            android:parentActivityName=".DisclaimerActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DisclaimerActivity"/>
+        </activity>
+        <activity
+            android:name=".NewRecordingActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".RecordActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".DisplayResultsActivity"
+            android:parentActivityName=".RecordActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RecordActivity"/>
+        </activity>
+        <activity
+            android:name=".NistSoftwareActivity"
+            android:parentActivityName=".DisclaimerActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DisclaimerActivity"/>
+        </activity>
+        <activity
+            android:name=".LiabilityNoticeActivity"
+            android:parentActivityName=".DisclaimerActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DisclaimerActivity"/>
+        </activity>
+        <activity
+            android:name=".UncertaintyNoticeActivity"
+            android:parentActivityName=".DisclaimerActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".DisclaimerActivity"/>
+        </activity>
+    </application>
+
+</manifest>

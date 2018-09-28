@@ -1,0 +1,119 @@
+<resources>
+    <string name="app_name">LTE Coverage Tool</string>
+
+    <!-- Disclaimer Screen. -->
+    <string name="activity_disclaimer_liability_notice_link_text">Disclaimer of Liability Notice</string>
+    <string name="activity_disclaimer_prohibition_notice_link_text">Prohibition on Use Notice</string>
+    <string name="activity_disclaimer_acknowledgement_notice_link_text">Acknowledgement Notice</string>
+    <string name="activity_disclaimer_nist_licensing_statement_link_text">NIST Licensing Statement</string>
+    <string name="activity_disclaimer_uncertainty_statement_link_text">Uncertainty Statement</string>
+    <string name="activity_disclaimer_exit_button_text">Exit</string>
+    <string name="activity_disclaimer_accept_button_text">Accept</string>
+
+    <!-- Liability Notice Screen. -->
+    <string name="activity_liability_notice_title_text"><u>DISCLAIMER OF LIABILITY NOTICE</u></string>
+    <string name="activity_liability_notice_body_text">
+        The United States Government shall not be liable or responsible for any maintenance, updating or for correction of any errors in the software.\n\n
+
+        THIS SOFTWARE IS PROVIDED “AS IS” WITHOUT ANY WARRANTY OF ANY KIND, EITHER EXPRESSED, IMPLIED, OR STATUTORY,
+        INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY THAT THE SOFTWARE WILL CONFORM TO SPECIFICATIONS, ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, OR FREEDOM FROM INFRINGEMENT, ANY WARRANTY THAT THE SOFTWARE WILL BE ERROR FREE, OR ANY WARRANTY THAT THE DOCUMENTATION, IF PROVIDED,
+        WILL CONFORM TO THE SOFTWARE.  IN NO EVENT SHALL THE UNITED STATES GOVERNMENT OR ITS CONTRACTORS OR SUBCONTRACTORS BE LIABLE FOR ANY DAMAGES, INCLUDING,
+        BUT NOT LIMITED TO, DIRECT, INDIRECT, SPECIAL OR CONSEQUENTIAL DAMAGES, ARISING OUT OF, RESULTING FROM, OR IN ANY WAY CONNECTED WITH THE SOFTWARE OR ANY
+        OTHER PROVIDED DOCUMENTATION, WHETHER OR NOT BASED UPON WARRANTY, CONTRACT, TORT, OR OTHERWISE, WHETHER OR NOT INJURY WAS SUSTAINED BY PERSONS OR PROPERTY
+        OR OTHERWISE, AND WHETHER OR NOT LOSS WAS SUSTAINED FROM, OR AROSE OUT OF THE RESULTS OF, OR USE OF, THE SOFTWARE OR ANY PROVIDED DOCUMENTATION. THE
+        UNITED STATES GOVERNMENT DISCLAIMS ALL WARRANTIES AND LIABILITIES REGARDING THIRD PARTY SOFTWARE, IF PRESENT IN THE SOFTWARE, AND DISTRIBUTES IT “AS IS.”\n\n
+
+        LICENSEE AGREES TO WAIVE ANY AND ALL CLAIMS AGAINST THE U.S. GOVERNMENT AND THE UNITED STATES GOVERNMENT’S CONTRACTORS AND SUBCONTRACTORS, AND SHALL
+        INDEMNIFY AND HOLD HARMLESS THE U.S. GOVERNMENT AND THE UNITED STATES GOVERNMENT’S CONTRACTORS AND SUBCONTRACTORS FOR ANY LIABILITIES, DEMANDS, DAMAGES,
+        EXPENSES, OR LOSSES THAT MAY ARISE FROM RECIPIENT’S USE OF THE SOFTWARE OR PROVIDED DOCUMENTATION, INCLUDING ANY LIABILITIES OR DAMAGES FROM PRODUCTS BASED
+        ON, OR RESULTING FROM, THE USE THEREOF.
+    </string>
+
+
+    <!-- Prohibition Notice Screen. -->
+    <string name="activity_prohibition_notice_title_text"><u>PROHIBITION ON USE OF DHS IDENTITIES NOTICE</u></string>
+    <string name="activity_prohibition_notice_body_text">
+        A.  No user shall use the DHS or its component name, seal or other identity, or any variation or adaptation thereof, for an enhancement, improvement,
+        modification or derivative work utilizing the software.\n\n
+
+        B.  No user shall use the DHS or its component name, seal or other identity, or any variation or adaptation thereof for advertising its products or
+        services, with the exception of using a factual statement such as included in the ACKNOWLEDGEMENT NOTICE indicating DHS funding of development of the software.\n\n
+
+        C.  No user shall make any trademark claim to the DHS or its component name, seal or other identity, or any other confusing similar identity, and no
+        user shall seek registration of these identities at the U.S. Patent and Trademark Office.
+    </string>
+
+    <!-- Acknowledgement Notice Screen. -->
+    <string name="activity_acknowledgement_notice_title_text"><u>ACKNOWLEDGEMENT NOTICE</u></string>
+    <string name="activity_acknowledgement_notice_body_text">
+        This software was developed with funds from the Department of Homeland Security’s Science and Technology Directorate.
+    </string>
+
+    <!-- NIST Software Screen. -->
+    <string name="activity_nist_software_title_text"><u>NIST Software</u></string>
+    <string name="activity_nist_software_body_text">
+        This software was developed by employees of the National Institute of Standards and Technology (NIST), an agency of the Federal Government
+        and is being made available as a public service. Pursuant to title 17 United States Code Section 105, works of NIST employees are not
+        subject to copyright protection in the United States.  This software may be subject to foreign copyright.  Permission in the United States
+        and in foreign countries, to the extent that NIST may hold copyright, to use, copy, modify, create derivative works, and distribute
+        this software and its documentation without fee is hereby granted on a non-exclusive basis, provided that this notice and disclaimer of
+        warranty appears in all copies.\n\n
+
+        THE SOFTWARE IS PROVIDED \'AS IS\' WITHOUT ANY WARRANTY OF ANY KIND, EITHER EXPRESSED, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED TO,
+        ANY WARRANTY THAT THE SOFTWARE WILL CONFORM TO SPECIFICATIONS, ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE,
+        AND FREEDOM FROM INFRINGEMENT, AND ANY WARRANTY THAT THE DOCUMENTATION WILL CONFORM TO THE SOFTWARE, OR ANY WARRANTY THAT THE SOFTWARE WILL
+        BE ERROR FREE.  IN NO EVENT SHALL NIST BE LIABLE FOR ANY DAMAGES, INCLUDING, BUT NOT LIMITED TO, DIRECT, INDIRECT, SPECIAL OR CONSEQUENTIAL
+        DAMAGES, ARISING OUT OF, RESULTING FROM, OR IN ANY WAY CONNECTED WITH THIS SOFTWARE, WHETHER OR NOT BASED UPON WARRANTY, CONTRACT, TORT, OR OTHERWISE,
+        WHETHER OR NOT INJURY WAS SUSTAINED BY PERSONS OR PROPERTY OR OTHERWISE, AND WHETHER OR NOT LOSS WAS SUSTAINED FROM, OR AROSE OUT OF THE RESULTS OF,
+        OR USE OF, THE SOFTWARE OR SERVICES PROVIDED HEREUNDER.
+    </string>
+
+    <!-- Uncertainty Notice Screen. -->
+    <string name="activity_uncertainty_notice_title_text"><u>Uncertainty Statement</u></string>
+    <string name="activity_uncertainty_notice_body_text">
+        Values are assumed to be accurate within ±8 dB for RSRP or ±3.5 dB for RSRQ, for a UE complying with 3GPP standard TR36.133 sections 9.1.2, 9.1.3,
+        9.1.5 and 9.1.6, operating under the following conditions:\n\n
+
+        1. Cell specific reference signals are transmitted either from one, two or four antenna ports.\n\n
+        2. Conditions defined in 36.101 Clause 7.3 for reference sensitivity are fulfilled.\n\n
+        3. RSRP|dBm according to Annex B.3.1 or B.3.3, as appropriate, for a corresponding Band.\n\n
+        4. Normal condition, as defined by 3GPP.
+    </string>
+
+    <!-- New Recording Screen. -->
+    <string name="activity_new_recording_offset_label_text">Offset (dB)</string>
+    <string name="activity_new_recording_new_recording_button_text">New Recording</string>
+
+    <!-- Record Screen. -->
+    <string name="activity_record_signal_strength_label_text">Signal Strength</string>
+    <string name="activity_record_pause_button_text">Pause</string>
+    <string name="activity_record_resume_button_text">Resume</string>
+    <string name="activity_record_stop_button_text">Stop</string>
+    <string name="activity_record_record_image_label_text">RECORDING...</string>
+    <string name="activity_record_recording_paused_image_label_text">PAUSE</string>
+    <string name="activity_record_lte_rsrp_label_text">LTE RSRP (dBm)*</string>
+    <string name="activity_record_lte_rsrq_label_text">LTE RSRQ (dBm)*</string>
+    <string name="activity_record_lte_pci_label_text">LTE PCI</string>
+    <string name="activity_record_data_points_label_text">Data points</string>
+    <string name="activity_record_offset_label_text">Offset (dB)</string>
+    <string name="activity_record_uncertainty_statement_text"><u>*Uncertainty Statement</u></string>
+    <string name="activity_record_signal_strength_excellent">Excellent</string>
+    <string name="activity_record_signal_strength_good">Good</string>
+    <string name="activity_record_signal_strength_poor">Poor</string>
+    <string name="activity_record_signal_strength_no_signal">No Signal</string>
+
+    <!-- Display Results Activity. -->
+    <string name="title_activity_display_results">DisplayResults</string>
+    <string name="activity_display_results_grade_tab_text">Grade</string>
+    <string name="activity_display_results_line_chart_tab_text">Line Chart</string>
+    <string name="activity_display_results_filename_label_text">Filename</string>
+
+    <!-- Grade Fragment. -->
+    <string name="fragment_grade_grade_label_text">GRADE</string>
+    <string name="fragment_grade_pie_chart_label_top">Excellent</string>
+    <string name="fragment_grade_pie_chart_label_mid">Good</string>
+    <string name="fragment_grade_pie_chart_label_low">Poor</string>
+
+
+</resources>

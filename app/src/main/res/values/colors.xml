@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#071A29</color>
+    <color name="colorPrimaryDark">#111111</color>
+    <color name="colorAccent">#00ff00</color>
+    <color name="colorActivityBackground">#172A39</color>
+    <color name="button_pause_resume_recording">#d76100</color>
+
+    <!-- Grade Fragment. -->
+    <color name="fragment_grade_grade_pie_top">#00FF00</color>
+    <color name="fragment_grade_grade_pie_mid">#FFFF00</color>
+    <color name="fragment_grade_grade_pie_low">#FF0000</color>
+    <color name="fragment_grade_pie_chart_text">#000000</color>
+    <color name="fragment_grade_pie_chart_text_legend">#FFFFFF</color>
+
+    <!-- Line Chart Fragment -->
+    <color name="fragment_line_chart_line_chart_text">#FFFFFF</color>
+    <color name="fragment_line_chart_line_chart_legend_text">#FFFFFF</color>
+    <color name="fragment_line_chart_line_chart_x_axis_text">#FFFFFF</color>
+    <color name="fragment_line_chart_line_chart_y_axis_text">#FFFFFF</color>
+    <color name="fragment_line_chart_line_chart_line_color">#FF6701</color>
+    <color name="fragment_line_chart_line_chart_circle_color">#FF6701</color>
+    <color name="fragment_line_chart_line_chart_circle_hole_color">#012F65</color>
+    <color name="fragment_line_chart_line_chart_highlight_color">#F47575</color>
+    <color name="fragment_line_chart_line_chart_value_text_color">#FFFFFF</color>
+
+    <!-- Record Activity. -->
+    <color name="activity_record_text_value_color">#8E9DFB</color>
+    <color name="activity_record_clickable_color">#FFFFFF</color>
+</resources>
