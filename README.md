@@ -10,7 +10,7 @@ Release of the software application and SDK is the culmination of several years 
 DHS S&T instructed NIST PSCR to release the software in order to allow first responders to access and use the application, and external developers to use the source code as a base for further development.
 
 ## OBTAINING SOFTWARE
-* Source code available at:  https://github.com/samlray/LTECoverageTool
+* Source code available at:  https://github.com/usnistgov/LTECoverageTool/
 * Android application available at:  https://play.google.com/store/apps/**<add link here>**
 * NTIA Report 18-XXX "In-Building LTE Coverage Measurements Using Public-Safety Android Phones" available at:  **<insert link here when available>**
 
