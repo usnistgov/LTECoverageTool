@@ -11,8 +11,8 @@ DHS S&T instructed NIST PSCR to release the software in order to allow first res
 
 ## OBTAINING SOFTWARE
 * Source code available at:  https://github.com/usnistgov/LTECoverageTool/
-* Android application available at:  https://play.google.com/store/apps/**<add link here>**
-* NTIA Report 18-XXX "In-Building LTE Coverage Measurements Using Public-Safety Android Phones" available at:  **<insert link here when available>**
+* Android application available at:  https://play.google.com/store/apps/details?id=gov.nist.oism.asd.ltecoveragetool
+* NTIA Report 18-XXX "In-Building LTE Coverage Measurements Using Public-Safety Android Phones" available at:  (link to be inserted when document is available, expected October 2018)
 
 ## HARDWARE/SOFTWARE REQUIREMENTS
 Android device, software version 4.4 (KitKat, API level 19) through version 9 (Pie, API level 28).
