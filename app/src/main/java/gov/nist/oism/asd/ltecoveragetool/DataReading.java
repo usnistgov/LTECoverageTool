@@ -19,63 +19,60 @@ package gov.nist.oism.asd.ltecoveragetool;
 import java.io.Serializable;
 import java.util.Date;
 
-public class DataReading implements Serializable {
+class DataReading implements Serializable {
+
+    static final int UNAVAILABLE = 2147483647;
+    static final int LOW_RSRP = -141;
+    static final int LOW_RSRQ = -20;
+    static final int PCI_NA = -1;
+    static final int EXECELLENT_RSRP_THRESHOLD = -95;
+    static final int GOOD_RSRP_THRESHOLD = -110;
+    static final int POOR_RSRP_THRESHOLD = -140;
 
     private Date timestamp;
     private int rsrp;
     private int rsrq;
     private int pci;
-    private int cqi;
 
-    public DataReading() {
+    DataReading() {
         this.timestamp = new Date();
-        this.rsrp = -141;
-        this.rsrq = -20;
-        this.pci = -1;
-        this.cqi = -20;
+        this.rsrp = UNAVAILABLE;
+        this.rsrq = UNAVAILABLE;
+        this.pci = PCI_NA;
     }
 
-    public DataReading(DataReading dataReading) {
+    DataReading(DataReading dataReading) {
         this.timestamp = new Date();
         this.rsrp = dataReading.rsrp;
         this.rsrq = dataReading.rsrq;
         this.pci = dataReading.pci;
-        this.cqi = dataReading.cqi;
     }
 
-    public Date getTimestamp() {
+    Date getTimestamp() {
         return new Date(timestamp.getTime());
     }
 
-    public int getRsrp() {
+    int getRsrp() {
         return rsrp;
     }
 
-    public void setRsrp(int rsrp) {
+    void setRsrp(int rsrp) {
         this.rsrp = rsrp;
     }
 
-    public int getRsrq() {
+    int getRsrq() {
         return rsrq;
     }
 
-    public void setRsrq(int rsrq) {
+    void setRsrq(int rsrq) {
         this.rsrq = rsrq;
     }
 
-    public int getPci() {
+    int getPci() {
         return pci;
     }
 
-    public void setPci(int pci) {
+    void setPci(int pci) {
         this.pci = pci;
-    }
-
-    public int getCqi() {
-        return cqi;
-    }
-
-    public void setCqi(int cqi) {
-        this.cqi = cqi;
     }
 }

@@ -20,11 +20,16 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.CellIdentityLte;
 import android.telephony.CellInfo;
 import android.telephony.CellInfoLte;
+import android.telephony.CellSignalStrengthLte;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
@@ -42,6 +47,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -49,18 +55,17 @@ import gov.nist.oism.asd.ltecoveragetool.util.LteLog;
 
 public class RecordActivity extends AppCompatActivity {
 
-    private static final String TAG = RecordActivity.class.getSimpleName();
-    private static final Object MUTEX = new Object();
-
     public static final String DATA_READINGS_KEY = "data_readings_key";
     public static final String OFFSET_KEY = "offset_key";
+
+    private static final String TAG = RecordActivity.class.getSimpleName();
+    private static final Object MUTEX = new Object();
 
     private Button mPauseRecordButton;
     private ImageView mRecordingImage;
     private TextView mRecordingImageLabel;
     private AlphaAnimation mRecordingImageAnimation;
     private SignalStrengthListener mSignalStrengthListener;
-    private TelephonyManager mTelephonyManager;
     private TextView mRsrpText, mRsrqText, mPciText, mDataPointsText, mOffsetText, mSignalStrengthText;
     private DataReading mCurrentReading;
     private double mOffset;
@@ -91,13 +96,13 @@ public class RecordActivity extends AppCompatActivity {
         ClickableSpan clickableSpan = new ClickableSpan() {
 
             @Override
-            public void onClick(View view) {
+            public void onClick(@NonNull View view) {
                 Intent intent = new Intent(RecordActivity.this, UncertaintyNoticeActivity.class);
                 startActivity(intent);
             }
 
             @Override
-            public void updateDrawState(TextPaint textPaint) {
+            public void updateDrawState(@NonNull TextPaint textPaint) {
                 super.updateDrawState(textPaint);
                 textPaint.setColor(getResources().getColor(R.color.activity_record_clickable_color));
             }
@@ -120,15 +125,12 @@ public class RecordActivity extends AppCompatActivity {
         mRecordingImageAnimation.setRepeatCount(Animation.INFINITE);
         mRecordingImageAnimation.setRepeatMode(Animation.REVERSE);
 
-        mRecordingImage.startAnimation(mRecordingImageAnimation);
-
         mSignalStrengthListener = new SignalStrengthListener();
-        ((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).listen(mSignalStrengthListener, SignalStrengthListener.LISTEN_SIGNAL_STRENGTHS);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+        // Now do the recording. We want to keep recording in the background so start and stop
+        // in onCreate and onDestroy.
+        ((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).listen(mSignalStrengthListener, SignalStrengthListener.LISTEN_SIGNAL_STRENGTHS);
+        setResumeRecordingState();
 
         mTimer = new Timer();
         mTimer.scheduleAtFixedRate(new TimerTask() {
@@ -142,6 +144,59 @@ public class RecordActivity extends AppCompatActivity {
                     // To be used on the UI thread.
                     dataReadingCopy = new DataReading(mCurrentReading);
                 }
+
+                try {
+                    if (ActivityCompat.checkSelfPermission(RecordActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                        List<CellInfo> allCellInfo = telephonyManager.getAllCellInfo();
+                        if (allCellInfo != null) {
+                            for (int i = 0; i < allCellInfo.size(); i++) {
+                                if (allCellInfo.get(i).isRegistered() && allCellInfo.get(i) instanceof CellInfoLte) {
+                                    CellInfoLte cellInfoLte = (CellInfoLte) allCellInfo.get(i);
+                                    CellSignalStrengthLte signalStrengthLte = cellInfoLte.getCellSignalStrength();
+
+                                    // Overwrite the SignalStrengthListener values if build is greater than 26 and only the rsrp if value less than 26.
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        dataReadingCopy.setRsrp(signalStrengthLte.getRsrp());
+                                        dataReadingCopy.setRsrq(signalStrengthLte.getRsrq());
+                                        LteLog.i(TAG, "(VERSION >= 26) rsrp: " + signalStrengthLte.getRsrp() + ", rsrq: " + signalStrengthLte.getRsrq());
+                                    }
+                                    else {
+                                        dataReadingCopy.setRsrp(signalStrengthLte.getDbm()); // dbm = rsrp for values less than build 26.
+                                        LteLog.i(TAG, String.format(Locale.getDefault(),"(VERSION < 26) rsrp: %d", signalStrengthLte.getDbm()));
+                                    }
+
+                                    // Now get the pci.
+                                    CellIdentityLte identityLte = cellInfoLte.getCellIdentity();
+                                    if (identityLte != null) {
+                                        int pci = identityLte.getPci();
+                                        if (pci == DataReading.UNAVAILABLE) {
+                                            pci = -1;
+                                        }
+                                        dataReadingCopy.setPci(pci);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception caught) {
+                    LteLog.e(TAG, caught.getMessage(), caught);
+                }
+
+                // Adjust the rsrp;
+                if (dataReadingCopy.getRsrp() == DataReading.UNAVAILABLE) {
+                    dataReadingCopy.setRsrp(DataReading.LOW_RSRP);
+                }
+                else {
+                    dataReadingCopy.setRsrp(dataReadingCopy.getRsrp() + (int) mOffset);
+                }
+
+                // Adjust the rsrq.
+                if (dataReadingCopy.getRsrq() == DataReading.UNAVAILABLE) {
+                    dataReadingCopy.setRsrq(DataReading.LOW_RSRQ);
+                }
+
                 if (isRecording()) {
                     mDataReadings.add(new DataReading(dataReadingCopy));
                 }
@@ -149,27 +204,25 @@ public class RecordActivity extends AppCompatActivity {
                 // To be used on the UI thread.
                 final int numDataReadings = mDataReadings.size() == 0 ? 1 : mDataReadings.size();
 
-                runOnUiThread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        if (dataReadingCopy.getRsrp() >= -95) {
+                runOnUiThread(() -> {
+                    if (isRecording()) {
+                        if (dataReadingCopy.getRsrp() >= DataReading.EXECELLENT_RSRP_THRESHOLD) {
                             mSignalStrengthText.setText(getResources().getString(R.string.activity_record_signal_strength_excellent));
                         }
-                        else if (-95 > dataReadingCopy.getRsrp() && dataReadingCopy.getRsrp() >= -110) {
+                        else if (DataReading.EXECELLENT_RSRP_THRESHOLD > dataReadingCopy.getRsrp() && dataReadingCopy.getRsrp() >= DataReading.GOOD_RSRP_THRESHOLD) {
                             mSignalStrengthText.setText(getResources().getString(R.string.activity_record_signal_strength_good));
                         }
-                        else if (-110 > dataReadingCopy.getRsrp() && dataReadingCopy.getRsrp() >= -140) {
+                        else if (DataReading.GOOD_RSRP_THRESHOLD > dataReadingCopy.getRsrp() && dataReadingCopy.getRsrp() >= DataReading.POOR_RSRP_THRESHOLD) {
                             mSignalStrengthText.setText(getResources().getString(R.string.activity_record_signal_strength_poor));
                         }
                         else {
                             mSignalStrengthText.setText(getResources().getString(R.string.activity_record_signal_strength_no_signal));
                         }
-                        mRsrpText.setText(dataReadingCopy.getRsrp() + "");
-                        mRsrqText.setText(dataReadingCopy.getRsrq() + "");
-                        mPciText.setText(dataReadingCopy.getPci() == -1 ? "N/A" : dataReadingCopy.getPci() + "");
-                        mDataPointsText.setText(numDataReadings + "");
-                        mOffsetText.setText(mOffset + "");
+                        mRsrpText.setText(String.format(Locale.getDefault(),"%d", dataReadingCopy.getRsrp()));
+                        mRsrqText.setText(String.format(Locale.getDefault(),"%d", dataReadingCopy.getRsrq()));
+                        mPciText.setText(dataReadingCopy.getPci() == -1 ? "N/A" : String.format(Locale.getDefault(),"%d", dataReadingCopy.getPci()));
+                        mDataPointsText.setText(String.format(Locale.getDefault(),"%d", numDataReadings));
+                        mOffsetText.setText(String.format(Locale.getDefault(),"%.1f", mOffset));
                     }
                 });
             }
@@ -177,11 +230,21 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         try {
             if (mSignalStrengthListener != null) {
-                mTelephonyManager.listen(mSignalStrengthListener, SignalStrengthListener.LISTEN_NONE);
+                ((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).listen(mSignalStrengthListener, SignalStrengthListener.LISTEN_NONE);
             }
         }
         catch (Exception caught) {
@@ -194,24 +257,22 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        try {
-            if (mSignalStrengthListener != null) {
-                mTelephonyManager.listen(mSignalStrengthListener, SignalStrengthListener.LISTEN_NONE);
-            }
-        }
-        catch (Exception caught) {
-            LteLog.e(TAG, caught.getMessage(), caught);
-        }
+    public void onBackPressed() {
+        AlertDialog alert = new AlertDialog.Builder(this)
+                .setTitle("Confirm")
+                .setMessage("Do you want to cancel recording? All data will be lost.")
+                .setPositiveButton("YES", (dialog, which) -> finish())
+                .setNegativeButton("NO", (dialog, which) -> dialog.dismiss())
+                .create();
+        alert.show();
     }
 
     public void pauseRecordButtonClicked(View view) {
         if (isRecording()) {
-            pauseRecording();
+            setPauseRecordingState();
         }
         else {
-            resumeRecording();
+            setResumeRecordingState();
         }
     }
 
@@ -229,10 +290,10 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     private boolean isRecording() {
-        return getString(R.string.activity_record_pause_button_text).equals(mPauseRecordButton.getText());
+        return getString(R.string.activity_record_pause_button_text).equals(mPauseRecordButton.getText().toString());
     }
 
-    private void pauseRecording() {
+    private void setPauseRecordingState() {
         mPauseRecordButton.setText(getString(R.string.activity_record_resume_button_text));
         mPauseRecordButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_new_recording), null, null, null);
         mRecordingImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_recording_paused));
@@ -240,7 +301,7 @@ public class RecordActivity extends AppCompatActivity {
         mRecordingImage.clearAnimation();
     }
 
-    private void resumeRecording() {
+    private void setResumeRecordingState() {
         mPauseRecordButton.setText(getString(R.string.activity_record_pause_button_text));
         mPauseRecordButton.setCompoundDrawablesWithIntrinsicBounds(getResources().getDrawable(R.drawable.ic_pause), null, null, null);
         mRecordingImage.setImageDrawable(getResources().getDrawable(R.drawable.ic_recording));
@@ -256,47 +317,13 @@ public class RecordActivity extends AppCompatActivity {
             String[] values = signalStrength.toString().split(" ");
             if (values != null && values.length > 12) {
                 int rsrp = Integer.parseInt(values[9]);
-                if (rsrp == 2147483647) {
-                    rsrp = -141;
-                }
-                else {
-                    rsrp = rsrp + (int) mOffset;
-                }
-
                 int rsrq = Integer.parseInt(values[10]);
-                if (rsrq == 2147483647) {
-                    rsrq = -20;
-                }
-
-                int cqi = Integer.parseInt(values[12]);
-                if (cqi == 2147483647) {
-                    cqi = -20;
-                }
-
-                int pci = -1; // "N/A"
-                mTelephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                try {
-                    if (ActivityCompat.checkSelfPermission(RecordActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        for (CellInfo cellInfo : mTelephonyManager.getAllCellInfo()) {
-                            if (cellInfo instanceof CellInfoLte) {
-
-                                // Gets the LTE PCI: (returns Physical Cell Id 0..503, Integer.MAX_VALUE if unknown)
-                                pci = ((CellInfoLte) cellInfo).getCellIdentity().getPci();
-                            }
-                        }
-                    }
-                }
-                catch (Exception caught) {
-                    LteLog.e(TAG, caught.getMessage(), caught);
-                }
-
                 synchronized (MUTEX) {
                     mCurrentReading.setRsrp(rsrp);
                     mCurrentReading.setRsrq(rsrq);
-                    mCurrentReading.setCqi(cqi);
-                    mCurrentReading.setPci(pci);
+                    mCurrentReading.setPci(DataReading.PCI_NA);
                 }
-                LteLog.i(TAG, "rsrp: " + rsrp + ", rsrq: " + rsrq);
+                LteLog.i(TAG, String.format(Locale.getDefault(),"rsrp: %d, rsrq: %d", rsrp, rsrq));
             }
 
             super.onSignalStrengthsChanged(signalStrength);

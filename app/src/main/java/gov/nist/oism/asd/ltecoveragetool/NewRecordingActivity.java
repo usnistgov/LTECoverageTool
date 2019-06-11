@@ -16,19 +16,27 @@
  */
 package gov.nist.oism.asd.ltecoveragetool;
 
+import android.Manifest;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+
+import java.util.Locale;
 
 import gov.nist.oism.asd.ltecoveragetool.util.LteLog;
 
 public class NewRecordingActivity extends AppCompatActivity {
 
-    private static final String TAG = NewRecordingActivity.class.getSimpleName();
     public static final String OFFSET_KEY = "offset_key";
-
+    private static final String TAG = NewRecordingActivity.class.getSimpleName();
+    private static final int PERMISSION_REQUEST_ACCESS_COARSE_LOCATION = 1;
+    private static final int PERMISSION_REQUEST_ACCESS_COARSE_LOCATION_START_ACTIVITY = 2;
     private EditText mOffsetUi;
 
     @Override
@@ -37,10 +45,29 @@ public class NewRecordingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_recording);
 
         mOffsetUi = findViewById(R.id.activity_new_recording_offset_ui);
-        mOffsetUi.setText(Double.toString(0.0));
+        mOffsetUi.setText(String.format(Locale.getDefault(), "%.1f", 0.0));
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_ACCESS_COARSE_LOCATION);
+        }
     }
 
     public void newRecordingButtonClicked(View view) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_ACCESS_COARSE_LOCATION_START_ACTIVITY);
+        }
+        else {
+            startRecordingActivity();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_ACCESS_COARSE_LOCATION_START_ACTIVITY && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            startRecordingActivity();
+        }
+    }
+
+    private void startRecordingActivity() {
         Intent intent = new Intent(this, RecordActivity.class);
         double offset = 0.0;
         try {
