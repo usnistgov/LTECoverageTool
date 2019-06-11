@@ -47,18 +47,18 @@ For more information concerning the LTE Coverage Tool application and SDK, pleas
 
 ## VERSION 1.2.0 NOTES
 Version 1.2.0 includes the following fixes or enhancements:
-	* If a user presses the back button during recording, data is lost (reported in V1.02).  Dialog is added to confirm back operation during recording and warn user that data will be lost.
-	* Application stops reporting new measurements (reported in V1.02).  Incorporated new approach for querying LTE information while recording to avoid reporting stale data.
-	* Application stops recording in background (e.g., when notification is received by UE).  Changed flag to allow continued running/recording in background.
-	* Added permissions request to use LTE functionality (access to location data required for querying LTE values directly from Android).
+* If a user presses the back button during recording, data is lost (reported in V1.02).  Dialog is added to confirm back operation during recording and warn user that data will be lost.
+* Application stops reporting new measurements (reported in V1.02).  Incorporated new approach for querying LTE information while recording to avoid reporting stale data.
+* Application stops recording in background (e.g., when notification is received by UE).  Changed flag to allow continued running/recording in background.
+* Added permissions request to use LTE functionality (access to location data required for querying LTE values directly from Android).
 
 ## KNOWN ISSUES
 Testing was conducted on 5 UE models from 4 vendors with 5 Android versions; vendor names are not provided below.  The following issues have been reported and may be considerd for future releases:
-	* On UE with small screen, "(dBm)*" wraps on measurement lines for RSRP and RSRQ.  Consider using layouts for screen sizes on future release.
-	* On UE with small screen, text wraps in Pause, Stop and Resume buttons.  Buffer could be decreased at sides, but it would expand buttons on larger screens also.  Edge of button would be close to edge of device, with extremely long buttons on large screens.  Alternate layouts would be a fix.
-	* Installation on SD card was not tested.
-	* One UE on Android v8.0.0 stops updating measurements under changing RF conditions, consistenly for a few seconds and occasionally observed for over 3.5 minutes.  Confirmed the same UE model/version showed the problem on app version V1.02 (new UE was not available in 2018 during initial testing).
-	* One UE on Android V4.4.4 continues reporting last measurements and service level (e.g., "Good" or "Poor") when the UE goes out of coverage; the app never reported "No Signal."  Upon reacquiring the LTE signal, measurements resume.  This is reproducible on the the first UE (with Android V4.4.4) and was observed twice on another model UE (Android 6.0.1).
+* On UE with small screen, "(dBm)*" wraps on measurement lines for RSRP and RSRQ.  Consider using layouts for screen sizes on future release.
+* On UE with small screen, text wraps in Pause, Stop and Resume buttons.  Buffer could be decreased at sides, but it would expand buttons on larger screens also.  Edge of button would be close to edge of device, with extremely long buttons on large screens.  Alternate layouts would be a fix.
+* Installation on SD card was not tested.
+* One UE on Android v8.0.0 stops updating measurements under changing RF conditions, consistenly for a few seconds and occasionally observed for over 3.5 minutes.  Confirmed the same UE model/version showed the problem on app version V1.02 (new UE was not available in 2018 during initial testing).
+* One UE on Android V4.4.4 continues reporting last measurements and service level (e.g., "Good" or "Poor") when the UE goes out of coverage; the app never reported "No Signal."  Upon reacquiring the LTE signal, measurements resume.  This is reproducible on the the first UE (with Android V4.4.4) and was observed twice on another model UE (Android 6.0.1).
 
 ## Disclaimer of Liability Notice
 The United States Government shall not be liable or responsible for any maintenance, updating or for correction of any errors in the software.
