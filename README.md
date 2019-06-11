@@ -5,14 +5,14 @@ This experimental application was developed by the National Institute of Standar
  
 The LTE Coverage Tool application and SDK enable first responders and public safety personnel to survey and evaluate coverage by LTE networks in environments where incidents are ongoing or planned.  While accuracy of the data from UE measurements is much lower than that of specialized equipment, the application provides subjective assessments of coverage quality, using UEs which are already available to agencies and personnel.
 
-Release of the software application and SDK is the culmination of several years of research efforts under the In-Building Coverage Quality Measurement Tool project, conducted by NIST PSCR and the National Telecommunications and Information Administration (NTIA) Institute for Telecommunication Sciences (ITS).  The goal of that project was to determine whether a UE (i.e., LTE phone) experimental application could be used to provide a reliable assessment of LTE coverage.  The final report, which will be released by NTIA ITS in late 2018, determined that "non-experts could quickly master the operation of this system and obtain results that are statistically equivalent to expert propagation measurement engineers.”
+Release of the software application and SDK is the culmination of several years of research efforts under the In-Building Coverage Quality Measurement Tool project, conducted by NIST PSCR and the National Telecommunications and Information Administration (NTIA) Institute for Telecommunication Sciences (ITS).  The goal of that project was to determine whether a UE (i.e., LTE phone) experimental application could be used to provide a reliable assessment of LTE coverage.  The final report, which will be released by NTIA ITS in 2019, determined that "non-experts could quickly master the operation of this system and obtain results that are statistically equivalent to expert propagation measurement engineers.”
 
 DHS S&T instructed NIST PSCR to release the software in order to allow first responders to access and use the application, and external developers to use the source code as a base for further development.
 
 ## OBTAINING SOFTWARE
 * Source code available at:  https://github.com/usnistgov/LTECoverageTool/
 * Android application available at:  https://play.google.com/store/apps/details?id=gov.nist.oism.asd.ltecoveragetool
-* NTIA Report 18-XXX "In-Building LTE Coverage Measurements Using Public-Safety Android Phones" available at:  (link to be inserted when document is available, expected October 2018)
+* NTIA Report 18-XXX "In-Building LTE Coverage Measurements Using Public-Safety Android Phones" available at:  (link to be inserted when document is available, expected July 2019)
 
 ## HARDWARE/SOFTWARE REQUIREMENTS
 Android device, software version 4.4 (KitKat, API level 19) through version 9 (Pie, API level 28).
@@ -45,18 +45,20 @@ Download application from Google Play Store, following prompts.
 ## TECHNICAL SUPPORT
 For more information concerning the LTE Coverage Tool application and SDK, please contact pscr@nist.gov.
 
+## VERSION 1.2.0 NOTES
+Version 1.2.0 includes the following fixes or enhancements:
+	* If a user presses the back button during recording, data is lost (reported in V1.02).  Dialog is added to confirm back operation during recording and warn user that data will be lost.
+	* Application stops reporting new measurements (reported in V1.02).  Incorporated new approach for querying LTE information while recording to avoid reporting stale data.
+	* Application stops recording in background (e.g., when notification is received by UE).  Changed flag to allow continued running/recording in background.
+	* Added permissions request to use LTE functionality (access to location data required for querying LTE values directly from Android).
+
 ## KNOWN ISSUES
-The following issues have been reported and may be considerd for future releases:
-* Application stops reporting new measurements
-	* A fix for a race condition in the experimental application was implemented in V1.01.1.  With that change, this issue was rarely seen on subsequent versions, but there are some related issues encountered on V1.0.2 that could be investigated further in a future release.  Remaining artifacts seem to fall in several areas:
-		* 2 of 4 UEs required reboot after installation of last release in order to start measurements.
-		* Several times we encountered problems starting after a UE went out of service; after the signal was restored, it had to be attached to n/w manually, or would not attach at all.  We suspect this is an Android or eNB configuration issue, but the app continues to show last measured values, even after restart (possibly the value is preserved in Android?).
-		* On one occasion, app continued showing -140 RSRP, with -3 RSRQ--not a viable combination, but this may be an Android artifact.
-	* Pixel2 measurements stopped updating after 17 mins (following 8-minute pause due to screen saver).
-	* If a user presses the back button during recording, data is lost.  Only option is to start a new recording.
-	* On XP7 (small screen), "(dBm)*" wraps on measurement lines for RSRP and RSRQ.  Consider using layouts for screen sizes on future release.
-	* On XP7 (small screen), text wraps in Pause, Stop and Resume buttons.  Buffer could be decreased at sides, but it would expand buttons on larger screens also.  Edge of button would be close to edge of device, with extremely long buttons on large screens.  Alternate layouts would be a fix.
+Testing was conducted on 5 UE models from 4 vendors with 5 Android versions; vendor names are not provided below.  The following issues have been reported and may be considerd for future releases:
+	* On UE with small screen, "(dBm)*" wraps on measurement lines for RSRP and RSRQ.  Consider using layouts for screen sizes on future release.
+	* On UE with small screen, text wraps in Pause, Stop and Resume buttons.  Buffer could be decreased at sides, but it would expand buttons on larger screens also.  Edge of button would be close to edge of device, with extremely long buttons on large screens.  Alternate layouts would be a fix.
 	* Installation on SD card was not tested.
+	* One UE on Android v8.0.0 stops updating measurements under changing RF conditions, consistenly for a few seconds and occasionally observed for over 3.5 minutes.  Confirmed the same UE model/version showed the problem on app version V1.02 (new UE was not available in 2018 during initial testing).
+	* One UE on Android V4.4.4 continues reporting last measurements and service level (e.g., "Good" or "Poor") when the UE goes out of coverage; the app never reported "No Signal."  Upon reacquiring the LTE signal, measurements resume.  This is reproducible on the the first UE (with Android V4.4.4) and was observed twice on another model UE (Android 6.0.1).
 
 ## Disclaimer of Liability Notice
 The United States Government shall not be liable or responsible for any maintenance, updating or for correction of any errors in the software.
