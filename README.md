@@ -12,10 +12,10 @@ DHS S&T instructed NIST PSCR to release the software in order to allow first res
 ## OBTAINING SOFTWARE
 * Source code available at:  https://github.com/usnistgov/LTECoverageTool/
 * Android application available at:  https://play.google.com/store/apps/details?id=gov.nist.oism.asd.ltecoveragetool
-* NTIA Report 18-XXX "In-Building LTE Coverage Measurements Using Public-Safety Android Phones" available at:  (link to be inserted when document is available, expected July 2019)
+* NTIA Report 18-XXX "In-Building LTE Coverage Measurements Using Public-Safety Android Phones" available at:  (link to be inserted when document is available, expected in 2020)
 
 ## HARDWARE/SOFTWARE REQUIREMENTS
-Android device, software version 4.4 (KitKat, API level 19) through version 9 (Pie, API level 28).
+Android device, software version 4.4 (KitKat, API level 19) through version 10 (API level 29).
 
 ## INSTALLING SOFTWARE
 Download application from Google Play Store, following prompts.
@@ -52,6 +52,13 @@ Version 1.2.0 includes the following fixes or enhancements:
 * Application stops recording in background (e.g., when notification is received by UE).  Changed flag to allow continued running/recording in background.
 * Added permissions request to use LTE functionality (access to location data required for querying LTE values directly from Android).
 
+## VERSION 1.3.2 NOTES
+Version 1.2.0 is not compatible with Android 10 (API version 29) and above, therefore Version 1.3.2 was introduced to use Android Q.  Android 10 changed the way the SignalStrenth object returns the value which causes a parse exception, required calling requestCellInfoUpdate to avoid stale data, and it requires additional permissions.  Version 1.3.2 includes the following fixes or enhancements:
+* Added ACCESS_FINE_LOCATION permissions (api 29)
+* Moved all view compatibility libraries from legacy to the new AndroidX compatibility libraries (api 29)
+* Called for refresh of cell info data for api 29 and higher
+* Parsed the cell info data differently for api 29 and higher
+
 ## KNOWN ISSUES
 Testing was conducted on 5 UE models from 4 vendors with 5 Android versions; vendor names are not provided below.  The following issues have been reported and may be considerd for future releases:
 * On UE with small screen, "(dBm)*" wraps on measurement lines for RSRP and RSRQ.  Consider using layouts for screen sizes on future release.
@@ -59,6 +66,7 @@ Testing was conducted on 5 UE models from 4 vendors with 5 Android versions; ven
 * Installation on SD card was not tested.
 * One UE on Android v8.0.0 stops updating measurements under changing RF conditions, consistenly for a few seconds and occasionally observed for over 3.5 minutes.  Confirmed the same UE model/version showed the problem on app version V1.02 (new UE was not available in 2018 during initial testing).
 * One UE on Android V4.4.4 continues reporting last measurements and service level (e.g., "Good" or "Poor") when the UE goes out of coverage; the app never reported "No Signal."  Upon reacquiring the LTE signal, measurements resume.  This is reproducible on the the first UE (with Android V4.4.4) and was observed twice on another model UE (Android 6.0.1).
+* RSRQ is reported in dBm and should be reported in dB.
 
 ## Disclaimer of Liability Notice
 The United States Government shall not be liable or responsible for any maintenance, updating or for correction of any errors in the software.

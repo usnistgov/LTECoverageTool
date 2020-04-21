@@ -17,7 +17,7 @@
 package gov.nist.oism.asd.ltecoveragetool;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +102,7 @@ public class LineChartFragment extends Fragment {
         // This causes the axis to be limited to the range of the dataset, i.e. the default appearance is that of being
         // zoomed in to see only the data range in the data set.
         // NOTE: you have to set both values to false for this to work.
-        mLineChart.getAxisLeft() .setStartAtZero(false);
+        mLineChart.getAxisLeft().setStartAtZero(false);
         mLineChart.getAxisRight().setStartAtZero(false);
 
         yAxisLeft.setDrawGridLines(true);
